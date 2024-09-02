@@ -9,8 +9,8 @@ class Role extends SpatieRole
 {
     use HasFactory;
 
-    public function permissions()
+   /* public function permissions()
     {
         return $this->belongsToMany(Permission::class);
-    }
+    }*/
 }

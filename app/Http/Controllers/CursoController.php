@@ -5,8 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Curso;
 
+use App\Http\Controllers\Controller;
+
+
 class CursoController extends Controller
 {
+
+    public function __construct()
+    {
+        // Aplica el middleware solo al método `index`
+        //$this->middleware('permission:read_cursos')->only('index');
+
+        // Si quisieras aplicar a más métodos, puedes usar `only` o `except`
+        // $this->middleware('permission:read_cursos')->except(['store', 'update']);
+    }
 
     public function index()
     {

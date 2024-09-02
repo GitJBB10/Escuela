@@ -16,7 +16,9 @@ class MatriculaResource extends JsonResource
     {
         return[
             'id' => $this->id,
+            'periodo_id'=> $this->periodo_id,
             'periodo'=> $this->periodo->periodo,
+            'estudiante_id' => $this->estudiante_id,
             'estudiante' => $this->estudiante->persona->nombres.' '.$this->estudiante->persona->apellidos,
             'curso_id' => $this->curso_id,
             'curso' => $this->curso->nombre_curso,

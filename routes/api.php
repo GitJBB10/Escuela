@@ -22,29 +22,91 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');*/
 
 Route::middleware('auth:sanctum')->group(function(){
+
+    // ****  Revisar  *****
+    Route::resource('/estudiante', EstudianteController::class)
+    ->only(['index', 'store', 'show', 'update'])
+    ->middleware([
+        'index' => 'permission:read_estudiantes',
+        'store' => 'permission:create_estudiantes',
+        'show' => 'permission:read_estudiantes',
+        'update' => 'permission:update_estudiantes',
+
+    ]);
     
-   
-    Route::resource('/estudiante', EstudianteController::class);
-    Route::resource('/profesor', ProfesorController::class);
+    Route::resource('/profesor', ProfesorController::class)
+    ->middleware([
+        'index' => 'permission:read_profesores',
+        'store' => 'permission:create_profesores',
+        'show' => 'permission:read_profesores',
+        'update' => 'permission:update_profesores',
+        'destroy' =>'permission:delete_profesores',
+    ]);
+
     Route::resource('/representante', RepresentanteController::class);
+   /* ->middleware([
+        'index' => 'permission:read_representantes',
+        'store' => 'permission:create_representantes',
+        'show' => 'permission:read_representantes',
+        'update' => 'permission:update_representantes',
+        'destroy' =>'permission:delete_representantes',
+        'estudiantes' =>'permission:read_representantes',
+    ]);*/
+
     Route::resource('/curso', CursoController::class);
-    Route::resource('/periodo', PeriodoController::class);
-    Route::resource('/matricula', MatriculaController::class);
-    Route::resource('/materia', MateriaController::class);
+     /*   ->only(['store', 'show', 'update', 'destroy'])
+        ->middleware([
+            'store' => 'permission:create_cursos',
+            'show' => 'permission:read_cursos',
+            'update' => 'permission:update_cursos',
+            'destroy' =>'permission:delete_cursos',
+        ]);*/
+
+    Route::resource('/periodo', PeriodoController::class)
+    ->middleware([
+        'index' => 'permission:read_periodos',
+        'store' => 'permission:manager_periodos',
+        'show' => 'permission:read_periodos',
+        'update' => 'permission:manager_periodos',
+        'destroy' =>'permission:manager_periodos',
+    ]);
+
+    // ****  Revisar  *****
+    Route::resource('/matricula', MatriculaController::class)
+    ->middleware([
+        'index' => 'permission:read_matriculas',
+        'store' => 'permission:crear_matriculas',
+        'show' => 'permission:read_matriculas',
+        'update' => 'permission:update_matriculas',
+        //'destroy' =>'permission:delete_matriculas',
+    ]);
+
+    Route::resource('/materia', MateriaController::class)
+    ->middleware([
+        //'index' => 'permission:read_materia',
+        'store' => 'permission:create_materia',
+        'show' => 'permission:read_materia',
+        'update' => 'permission:update_materia',
+        //'destroy' =>'permission:delete_materia',
+    ]);    
+
     Route::resource('/clase', ClaseController::class);
     Route::get('/representante/{id}/estudiantes', [RepresentanteController::class, 'estudiantes']);
     Route::resource('/role', RoleController::class);
     Route::resource('/permission', PermissionController::class);
     Route::post('/role/{role}/permissions', [RoleController::class, 'assignPermissions']);
+
+    Route::get('/user/filter', [UserController::class, 'filterUser']);
+    Route::resource('/user', UserController::class); //->middleware(['permission:read_users']);
+    Route::post('/user/{user}/roles', [UserController::class,'assignRoles']);
+
+    Route::resource('/permission', PermissionController::class);
+    Route::post('/role/{role}/permissions', [RoleController::class, 'assignPermissions']);
+    Route::get('/role/{roleId}/permissions', [RoleController::class, 'getRolePermissions']);
+
+    Route::post('/logout',[AuthController::class,'logout']);
+
 } );
 
 Route::post('/login',[AuthController::class,'login']);
-Route::post('/logout',[AuthController::class,'logout']);
 
-Route::get('/user/filter', [UserController::class, 'filterUser']);
-Route::resource('/user', UserController::class);
-Route::post('/user/{user}/roles', [UserController::class,'assignRoles']);
-
-Route::resource('/permission', PermissionController::class);
-Route::post('/role/{role}/permissions', [RoleController::class, 'assignPermissions']);
-Route::get('/role/{roleId}/permissions', [RoleController::class, 'getRolePermissions']);

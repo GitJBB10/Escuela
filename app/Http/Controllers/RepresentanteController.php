@@ -10,8 +10,19 @@ use App\Http\Resources\EstudianteResource;
 use App\Http\Requests\RepresentanteRequest;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+use Illuminate\Support\Facades\Hash;
+
 class RepresentanteController extends Controller
 {
+
+    public function __construct()
+    {
+      /*  $this->middleware('permission:read_representantes')->only(['index', 'show']);
+        $this->middleware('permission:create_representantes')->only('store');
+        $this->middleware('permission:update_representantes')->only('update');
+        $this->middleware('permission:delete_representantes')->only('destroy');
+    */
+    }
 
     public function index()
     {

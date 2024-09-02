@@ -7,8 +7,14 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+use App\Http\Controllers\Controller;
+
 class UserController extends Controller
 {
+    public function __construct()
+    {
+       //$this->middleware('permission:read_users')->only(['index']);
+    }
 
     public function index()
     {
@@ -73,8 +79,9 @@ class UserController extends Controller
         return response()->json($usuario,200);
     }
 
+    // ********   ASIGNAR UN ROL A UN USUARIO   **************
     public function assignRoles(Request $request, User $user)
-{
+   {
     $roles = $request->input('roles');
 
     if (empty($roles)) {
@@ -88,7 +95,7 @@ class UserController extends Controller
         \Log::error('Error asignando roles:', ['error' => $e->getMessage()]);
         return response()->json(['message' => 'Error al asignar roles'], 500);
     }
-}
+   }
 
     /**
      * Remove the specified resource from storage.

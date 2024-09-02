@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 class RoleController extends Controller
 {
  
+    public function __construct()
+    {
+        //$this->middleware('permission:read_roles')->only(['index']);
+    }
+
     public function index()
     {
         $rol = Role::all();
@@ -40,6 +45,7 @@ class RoleController extends Controller
         //
     }
 
+    // ********    ASIGNAR ROLES    ***********
     public function assignRoles(Request $request, User $user)
     {
         $roles = $request->input('roles');
@@ -48,6 +54,7 @@ class RoleController extends Controller
         return response()->json(['message' => 'Roles asignados correctamente']);
     }
     
+    // ********    ASIGNAR PERMISOS   ************
     public function assignPermissions(Request $request, $roleId)
     {
         \Log::info('Assigning permissions to role', [
