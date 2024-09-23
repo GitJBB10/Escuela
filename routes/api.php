@@ -90,7 +90,8 @@ Route::middleware('auth:sanctum')->group(function(){
         //'destroy' =>'permission:delete_materia',
     ]);    
 
-    Route::resource('/clase', ClaseController::class);
+    
+    
     Route::get('/representante/{id}/estudiantes', [RepresentanteController::class, 'estudiantes']);
     Route::resource('/role', RoleController::class);
     Route::resource('/permission', PermissionController::class);
@@ -108,5 +109,9 @@ Route::middleware('auth:sanctum')->group(function(){
 
 } );
 
-Route::post('/login',[AuthController::class,'login']);
+Route::get('/clase/reporte', [ClaseController::class, 'reporteClases']);
 
+Route::resource('/clase', ClaseController::class);
+Route::get('/clase/exportar', [ClaseController::class, 'export']);
+
+Route::post('/login',[AuthController::class,'login']);
