@@ -23,6 +23,7 @@ class EstudianteRequest extends FormRequest
     {
         return [
             'nombres' => 'required|string|max:60',
+            'identificacion' => 'required|string|max:10',
             'apellidos' => 'required|string|max:60',
             'mail' => 'required|string|email|max:120|unique:persona',
             'genero' => 'required|string',

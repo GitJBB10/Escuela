@@ -24,15 +24,7 @@ Route::get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->group(function(){
 
     // ****  Revisar  *****
-    Route::resource('/estudiante', EstudianteController::class)
-    ->only(['index', 'store', 'show', 'update'])
-    ->middleware([
-        'index' => 'permission:read_estudiantes',
-        'store' => 'permission:create_estudiantes',
-        'show' => 'permission:read_estudiantes',
-        'update' => 'permission:update_estudiantes',
-
-    ]);
+    
     
     Route::resource('/profesor', ProfesorController::class)
     ->middleware([
@@ -108,6 +100,8 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/logout',[AuthController::class,'logout']);
 
 } );
+
+Route::resource('/estudiante', EstudianteController::class);
 
 Route::get('/clase/reporte', [ClaseController::class, 'reporteClases']);
 

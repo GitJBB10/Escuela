@@ -23,8 +23,8 @@ class EstudianteController extends Controller
      */
     public function store(Request $request)
     {
-   
-        $validatedData = $request->validate([
+        
+        $personaData = $request->validate([
             'nombres' => 'required|string|max:60',
             'apellidos' => 'required|string|max:60',
             'mail' => 'required|string|email|max:120',
@@ -32,23 +32,17 @@ class EstudianteController extends Controller
             'f_nacimiento' => 'required|date',
             'direccion' => 'required|string|max:200',
         ]);
+
+        $estudianteData = [
+            'identificacion' => $request['identificacion'],
+            'representante_id' => $request['representante_id'],
+       ];
         
-       $persona = Persona::create($validatedData); 
-       $estudiante = new Estudiante(['representante_id' => $request['representante_id']]);
+       $persona = Persona::create($personaData); 
+       $estudiante = new Estudiante($estudianteData);
        $persona->estudiante()->save($estudiante); 
 
-       return response()->json($estudiante->load('persona'), 201);
-
-    /*
-            {
-            "nombres": "Pedro",
-            "apellidos":"Bustos",
-            "mail":"correo2@mail.com",
-            "genero":"M",
-            "f_nacimiento":"2002-05-05",
-            "direccion":"Direccion"
-            }
-      */      
+       return response()->json($estudiante->load('persona'), 201);    
 
     }
 
@@ -71,16 +65,21 @@ class EstudianteController extends Controller
         $estudiante = Estudiante::findOrFail($id);
         $persona = $estudiante->persona;
 
-        $validatedData = $request->validate([
-            'nombres' => 'required|string|max:60',
-            'apellidos' => 'required|string|max:60',
-            'mail' => 'required|string|email|max:120',
-            'genero' => 'required|string',
-            'f_nacimiento' => 'required|date',
-            'direccion' => 'required|string|max:200'. $persona->id, 
-        ]);
+        $personaData = [
+            'nombres' => $request['nombres'],
+            'apellidos' => $request['apellidos'],
+            'mail' => $request['mail'],
+            'genero' => $request['genero'],
+            'f_nacimiento' => $request['f_nacimiento'],
+            'direccion' => $request['direccion'],
+         ];
 
-        $persona->update($validatedData);
+        $estudianteData = [
+            'identificacion' => $request['identificacion']
+       ];
+
+        $persona->update($personaData);
+        $estudiante->update($estudianteData);
         return new EstudianteResource($estudiante->load('persona'));
 
         /*return response()->json($estudiante->load('persona'));*/
